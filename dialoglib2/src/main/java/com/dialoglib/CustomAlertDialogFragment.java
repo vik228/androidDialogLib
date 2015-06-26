@@ -10,8 +10,8 @@ import android.os.Bundle;
 public class CustomAlertDialogFragment extends DialogFragment implements DialogInterface.OnClickListener {
 
     private static String KEY_TITLE = "title";
-    private static String TAG = "alertDialog";
-    private static String DIALOG_ID = "dialogId";
+    private static String TAG = "alert_dialog";
+    private static String KEY_DIALOG_ID = "dialog_id";
     private static String KEY_MESSAGE = "message";
     private AlertDialogClickListener mListener;
     private int mDialogId;
@@ -34,16 +34,16 @@ public class CustomAlertDialogFragment extends DialogFragment implements DialogI
         CustomAlertDialogFragment customAlertDialogFragment = new CustomAlertDialogFragment();
         Bundle bundle = new Bundle();
         bundle.putInt(KEY_TITLE,title);
-        bundle.putInt(DIALOG_ID, dialogId);
+        bundle.putInt(KEY_DIALOG_ID, dialogId);
         bundle.putInt(KEY_MESSAGE,message);
         customAlertDialogFragment.setArguments(bundle);
-        customAlertDialogFragment.show(target.getFragmentManager(), KEY_TITLE);
+        customAlertDialogFragment.show(target.getFragmentManager(), TAG);
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mDialogId = getArguments().getInt(DIALOG_ID);
+        mDialogId = getArguments().getInt(KEY_DIALOG_ID);
     }
 
     @Override

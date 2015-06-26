@@ -11,17 +11,17 @@ import android.view.ViewGroup;
 
 public class BasicDialogFragment extends DialogFragment {
 
-    public static String RES_ID_KEY = "resId";
-    public static String TITLE_KEY = "titleKey";
-    public static String TAG = "basicDialog";
-    private OnViewInflat mViewInflatListener;
+    private static String KEY_LAYOUT_ID = "res_id";
+    private static String KEY_TITLE = "title_key";
+    private static String TAG = "basic_dialog";
+    private OnLayoutInflateListener mViewInflatListener;
 
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        if (activity instanceof OnViewInflat) {
-            mViewInflatListener = (OnViewInflat)activity;
+        if (activity instanceof OnLayoutInflateListener) {
+            mViewInflatListener = (OnLayoutInflateListener)activity;
         } else {
             throw new ClassCastException(activity.toString() + " must implement onViewInflat");
         }
@@ -30,11 +30,11 @@ public class BasicDialogFragment extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Bundle args = getArguments();
-        int resId  = args.getInt(RES_ID_KEY);
-        int title  = args.getInt(TITLE_KEY);
+        int resId  = args.getInt(KEY_LAYOUT_ID);
+        int title  = args.getInt(KEY_TITLE);
         getDialog().setTitle(getString(title));
         View view = inflater.inflate(resId, container);
-        mViewInflatListener.setDialogView(view);
+        mViewInflatListener.onLayoutInflate(view);
         return view;
     }
 
@@ -53,13 +53,13 @@ public class BasicDialogFragment extends DialogFragment {
     public static void createBasicDialog (Activity target, int title, int resId) {
         BasicDialogFragment basicDialogFragment = new BasicDialogFragment();
         Bundle bundle = new Bundle();
-        bundle.putInt(RES_ID_KEY, resId);
-        bundle.putInt(TITLE_KEY, title);
+        bundle.putInt(KEY_LAYOUT_ID, resId);
+        bundle.putInt(KEY_TITLE, title);
         basicDialogFragment.setArguments(bundle);
         basicDialogFragment.show(target.getFragmentManager(), TAG);
     }
 
-    public interface OnViewInflat {
-         void setDialogView (View view);
+    public interface OnLayoutInflateListener {
+         void onLayoutInflate(View view);
     }
 }
