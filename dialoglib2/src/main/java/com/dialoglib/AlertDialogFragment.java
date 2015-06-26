@@ -7,7 +7,7 @@ import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
 
-public class CustomAlertDialogFragment extends DialogFragment implements DialogInterface.OnClickListener {
+public class AlertDialogFragment extends DialogFragment implements DialogInterface.OnClickListener {
 
     private static String KEY_TITLE = "title";
     private static String TAG = "alert_dialog";
@@ -30,12 +30,12 @@ public class CustomAlertDialogFragment extends DialogFragment implements DialogI
         return alertDialog;
     }
 
-    public static void CreateAlertDialog (Activity target, int title, int dialogId, int message) {
-        CustomAlertDialogFragment customAlertDialogFragment = new CustomAlertDialogFragment();
+    public static void createAlertDialog(Activity target, int title, int dialogId, int message) {
+        AlertDialogFragment customAlertDialogFragment = new AlertDialogFragment();
         Bundle bundle = new Bundle();
-        bundle.putInt(KEY_TITLE,title);
+        bundle.putInt(KEY_TITLE, title);
         bundle.putInt(KEY_DIALOG_ID, dialogId);
-        bundle.putInt(KEY_MESSAGE,message);
+        bundle.putInt(KEY_MESSAGE, message);
         customAlertDialogFragment.setArguments(bundle);
         customAlertDialogFragment.show(target.getFragmentManager(), TAG);
     }
@@ -49,15 +49,15 @@ public class CustomAlertDialogFragment extends DialogFragment implements DialogI
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        if(activity instanceof AlertDialogClickListener){
-            mListener = (AlertDialogClickListener)activity;
+        if (activity instanceof AlertDialogClickListener) {
+            mListener = (AlertDialogClickListener) activity;
         }
     }
 
     @Override
     public void onClick(DialogInterface dialog, int which) {
-        if(null != mListener){
-            mListener.onClick(dialog,mDialogId,which);
+        if (null != mListener) {
+            mListener.onClick(dialog, mDialogId, which);
         }
 
     }

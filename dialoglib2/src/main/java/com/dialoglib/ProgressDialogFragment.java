@@ -33,18 +33,18 @@ public class ProgressDialogFragment extends DialogFragment {
     }
 
     public static void removeDialog(Activity target) {
-        try {
-            target.getFragmentManager().executePendingTransactions();
-            Fragment frag = target.getFragmentManager()
-                    .findFragmentByTag(TAG_PROGRESS_DIALOG);
-            if (frag instanceof ProgressDialogFragment) {
-                ProgressDialogFragment progressFrag = (ProgressDialogFragment) frag;
-                progressFrag.dismiss();
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
+
+        if (target.isFinishing())
+            return;
+        target.getFragmentManager().executePendingTransactions();
+        Fragment frag = target.getFragmentManager()
+                .findFragmentByTag(TAG_PROGRESS_DIALOG);
+        if (frag instanceof ProgressDialogFragment) {
+            ProgressDialogFragment progressFrag = (ProgressDialogFragment) frag;
+            progressFrag.dismiss();
         }
     }
+
 
     public static void createDialog(Activity target, int title, int message) {
         DialogFragment delFrag = new ProgressDialogFragment();

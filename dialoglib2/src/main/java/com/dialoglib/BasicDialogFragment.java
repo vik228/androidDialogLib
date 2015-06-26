@@ -21,36 +21,36 @@ public class BasicDialogFragment extends DialogFragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         if (activity instanceof OnLayoutInflateListener) {
-            mViewInflatListener = (OnLayoutInflateListener)activity;
+            mViewInflatListener = (OnLayoutInflateListener) activity;
         } else {
-            throw new ClassCastException(activity.toString() + " must implement onViewInflat");
+            throw new RuntimeException(activity.toString() + " must implement onViewInflat");
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Bundle args = getArguments();
-        int resId  = args.getInt(KEY_LAYOUT_ID);
-        int title  = args.getInt(KEY_TITLE);
+        int resId = args.getInt(KEY_LAYOUT_ID);
+        int title = args.getInt(KEY_TITLE);
         getDialog().setTitle(getString(title));
         View view = inflater.inflate(resId, container);
         mViewInflatListener.onLayoutInflate(view);
         return view;
     }
 
-    public static void removeBasicDialog (Activity target) {
-        try {
-            target.getFragmentManager().executePendingTransactions();
-            Fragment frag = target.getFragmentManager().findFragmentByTag(TAG);
-            if (frag instanceof BasicDialogFragment) {
-                ((BasicDialogFragment) frag).dismiss();
-            }
-        } catch (Exception exception) {
-            exception.printStackTrace();
+    public static void removeBasicDialog(Activity target) {
+
+        if (target.isFinishing())
+            return;
+        target.getFragmentManager().executePendingTransactions();
+        Fragment frag = target.getFragmentManager().findFragmentByTag(TAG);
+        if (frag instanceof BasicDialogFragment) {
+            ((BasicDialogFragment) frag).dismiss();
         }
     }
 
-    public static void createBasicDialog (Activity target, int title, int resId) {
+
+    public static void createBasicDialog(Activity target, int title, int resId) {
         BasicDialogFragment basicDialogFragment = new BasicDialogFragment();
         Bundle bundle = new Bundle();
         bundle.putInt(KEY_LAYOUT_ID, resId);
@@ -60,6 +60,6 @@ public class BasicDialogFragment extends DialogFragment {
     }
 
     public interface OnLayoutInflateListener {
-         void onLayoutInflate(View view);
+        void onLayoutInflate(View view);
     }
 }
